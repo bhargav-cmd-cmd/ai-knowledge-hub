@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+backend/.env
+backend/knowledge_hub.db
+backend/test_knowledge_hub.db
+backend/uploads/
+
+# Node
+node_modules/
+frontend/.next/
+frontend/out/
+frontend/.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.*
+!.env.example
+*.db
