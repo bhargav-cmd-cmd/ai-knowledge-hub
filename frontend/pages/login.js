@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import Layout from "../components/Layout";
+import AuthLayout from "../components/AuthLayout";
+import { IconAlert, IconLock, IconMail, IconArrowRight } from "../components/Icons";
 import { api, setToken } from "../lib/api";
 
 export default function Login() {
@@ -26,27 +27,79 @@ export default function Login() {
   }
 
   return (
-    <Layout>
-      <div className="card" style={{ maxWidth: 420, margin: "40px auto" }}>
-        <h2>Login</h2>
-        <form onSubmit={submit}>
-          <div style={{ marginBottom: 12 }}>
-            <label className="label">Email</label>
-            <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+    <AuthLayout
+      title="Welcome back"
+      subtitle="Sign in to continue to your knowledge hub."
+      footer={
+        <>
+          New here? <a href="/register">Create an account</a>
+        </>
+      }
+    >
+      <form onSubmit={submit}>
+        <div className="field">
+          <label className="label" htmlFor="login-email">
+            Email address
+          </label>
+          <div className="input-wrap">
+            <span className="input-icon">
+              <IconMail size={17} />
+            </span>
+            <input
+              id="login-email"
+              className="input"
+              type="email"
+              autoComplete="email"
+              placeholder="you@company.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
-          <div style={{ marginBottom: 12 }}>
-            <label className="label">Password</label>
-            <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        </div>
+
+        <div className="field">
+          <label className="label" htmlFor="login-password">
+            Password
+          </label>
+          <div className="input-wrap">
+            <span className="input-icon">
+              <IconLock size={17} />
+            </span>
+            <input
+              id="login-password"
+              className="input"
+              type="password"
+              autoComplete="current-password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </div>
-          {error && <div className="error">{error}</div>}
-          <button className="btn" type="submit" disabled={loading} style={{ marginTop: 12, width: "100%" }}>
-            {loading ? "Signing in..." : "Sign in"}
-          </button>
-        </form>
-        <p style={{ marginTop: 12, color: "var(--muted)" }}>
-          No account? <a href="/register">Register</a>
-        </p>
-      </div>
-    </Layout>
+        </div>
+
+        {error && (
+          <div className="error">
+            <IconAlert size={16} style={{ flexShrink: 0, marginTop: 2 }} />
+            <span>{error}</span>
+          </div>
+        )}
+
+        <button className="btn btn-lg btn-block" type="submit" disabled={loading} style={{ marginTop: 18 }}>
+          {loading ? (
+            <>
+              <span className="spinner" />
+              Signing in…
+            </>
+          ) : (
+            <>
+              Sign in
+              <IconArrowRight size={17} />
+            </>
+          )}
+        </button>
+      </form>
+    </AuthLayout>
   );
 }

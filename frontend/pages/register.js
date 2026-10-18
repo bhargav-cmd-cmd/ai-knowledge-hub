@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import Layout from "../components/Layout";
+import AuthLayout from "../components/AuthLayout";
+import { IconAlert, IconArrowRight, IconLock, IconMail, IconUser } from "../components/Icons";
 import { api, setToken } from "../lib/api";
 
 export default function Register() {
@@ -27,28 +28,100 @@ export default function Register() {
   }
 
   return (
-    <Layout>
-      <div className="card" style={{ maxWidth: 420, margin: "40px auto" }}>
-        <h2>Create account</h2>
-        <form onSubmit={submit}>
-          <div style={{ marginBottom: 12 }}>
-            <label className="label">Full name</label>
-            <input className="input" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+    <AuthLayout
+      title="Create your account"
+      subtitle="Start turning your PDFs into answers in under a minute."
+      footer={
+        <>
+          Already registered? <a href="/login">Sign in</a>
+        </>
+      }
+    >
+      <form onSubmit={submit}>
+        <div className="field">
+          <label className="label" htmlFor="reg-name">
+            Full name <span className="muted">(optional)</span>
+          </label>
+          <div className="input-wrap">
+            <span className="input-icon">
+              <IconUser size={17} />
+            </span>
+            <input
+              id="reg-name"
+              className="input"
+              autoComplete="name"
+              placeholder="Ada Lovelace"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+            />
           </div>
-          <div style={{ marginBottom: 12 }}>
-            <label className="label">Email</label>
-            <input className="input" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        </div>
+
+        <div className="field">
+          <label className="label" htmlFor="reg-email">
+            Email address
+          </label>
+          <div className="input-wrap">
+            <span className="input-icon">
+              <IconMail size={17} />
+            </span>
+            <input
+              id="reg-email"
+              className="input"
+              type="email"
+              autoComplete="email"
+              placeholder="you@company.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
-          <div style={{ marginBottom: 12 }}>
-            <label className="label">Password</label>
-            <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
+        </div>
+
+        <div className="field">
+          <label className="label" htmlFor="reg-password">
+            Password
+          </label>
+          <div className="input-wrap">
+            <span className="input-icon">
+              <IconLock size={17} />
+            </span>
+            <input
+              id="reg-password"
+              className="input"
+              type="password"
+              autoComplete="new-password"
+              placeholder="At least 6 characters"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={6}
+            />
           </div>
-          {error && <div className="error">{error}</div>}
-          <button className="btn" type="submit" disabled={loading} style={{ marginTop: 12, width: "100%" }}>
-            {loading ? "Creating..." : "Register"}
-          </button>
-        </form>
-      </div>
-    </Layout>
+          <div className="hint">Use 6+ characters. Your account is scoped to your own documents.</div>
+        </div>
+
+        {error && (
+          <div className="error">
+            <IconAlert size={16} style={{ flexShrink: 0, marginTop: 2 }} />
+            <span>{error}</span>
+          </div>
+        )}
+
+        <button className="btn btn-lg btn-block" type="submit" disabled={loading} style={{ marginTop: 18 }}>
+          {loading ? (
+            <>
+              <span className="spinner" />
+              Creating account…
+            </>
+          ) : (
+            <>
+              Create account
+              <IconArrowRight size={17} />
+            </>
+          )}
+        </button>
+      </form>
+    </AuthLayout>
   );
 }
